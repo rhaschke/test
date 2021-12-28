@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: rhaschke/industrial_ci@master
+      - uses: rhaschke/industrial_ci@fix-folder-removal
         env:
           DOCKER_IMAGE: ros:noetic-ros-base
           TARGET_WORKSPACE: github:frankaemika/franka_ros#develop -franka_msgs
