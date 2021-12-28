@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+
+jobs:
+  default:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: rhaschke/industrial_ci@master
+        env:
+          DOCKER_IMAGE: ros:noetic-ros-base
+          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop -franka_msgs
+          AFTER_SETUP_TARGET_WORKSPACE: |
+            pwd
+            ls
