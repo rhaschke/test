@@ -15,7 +15,4 @@ jobs:
       - uses: rhaschke/industrial_ci@fix-folder-removal
         env:
           DOCKER_IMAGE: ros:noetic-ros-base
-          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop -franka_msgs
-          AFTER_SETUP_TARGET_WORKSPACE: |
-            pwd
-            ls
+          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop +franka_description -franka_ros
