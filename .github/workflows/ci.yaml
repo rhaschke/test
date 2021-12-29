@@ -16,10 +16,22 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: ipa-mdl/industrial_ci@feature/repository-filter
+      - name: folder
+        uses: ipa-mdl/industrial_ci@feature/repository-filter
         env:
           TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,franka_description
 
-      - uses: ipa-mdl/industrial_ci@feature/repository-filter
+      - name: -folder1,folder2
+        uses: ipa-mdl/industrial_ci@feature/repository-filter
         env:
           TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,-franka_description,franka_msgs
+
+      - name: -folder1,-folder2
+        uses: ipa-mdl/industrial_ci@feature/repository-filter
+        env:
+          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,-franka_description,-franka_msgs
+
+      - name: folder1,folder2
+        uses: ipa-mdl/industrial_ci@feature/repository-filter
+        env:
+          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,franka_description,franka_msgs
