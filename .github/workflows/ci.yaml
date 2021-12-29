@@ -9,10 +9,13 @@ jobs:
   default:
 
     runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE: ros:noetic-ros-base
+      AFTER_SETUP_TARGET_WORKSPACE: find $BASEDIR/${PREFIX}target_ws/src -maxdepth 2 -type d -ls
+
     steps:
       - uses: actions/checkout@v2
 
-      - uses: rhaschke/industrial_ci@fix-folder-removal
+      - uses: ipa-mdl/industrial_ci@feature/repository-filter
         env:
-          DOCKER_IMAGE: ros:noetic-ros-base
-          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop +franka_description -franka_ros
+          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,franka_description
