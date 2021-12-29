@@ -19,3 +19,7 @@ jobs:
       - uses: ipa-mdl/industrial_ci@feature/repository-filter
         env:
           TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,franka_description
+
+      - uses: ipa-mdl/industrial_ci@feature/repository-filter
+        env:
+          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,-franka_description,franka_msgs
