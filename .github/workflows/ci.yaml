@@ -23,6 +23,7 @@ jobs:
         apt-get -qq update
         apt-get -qq install -y --no-upgrade --no-install-recommends git
         git --version
+        git config --global --add safe.directory "*"
 
     steps:
       - uses: actions/checkout@v2
