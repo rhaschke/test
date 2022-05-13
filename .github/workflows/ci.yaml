@@ -2,36 +2,30 @@ name: CI
 
 on:
   workflow_dispatch:
-  pull_request:
   push:
 
 jobs:
   default:
+    strategy:
+      fail-fast: false
+      matrix:
+        env:
+          - IMAGE: melodic
+          - IMAGE: noetic
 
     runs-on: ubuntu-latest
+    name: ${{ matrix.env.IMAGE }}
     env:
-      DOCKER_IMAGE: ros:noetic-ros-base
-      AFTER_SETUP_TARGET_WORKSPACE: find $BASEDIR/${PREFIX}target_ws/src -maxdepth 2 -type d -ls
+      DOCKER_IMAGE: ros:${{ matrix.env.IMAGE }}-ros-core
+      BASEDIR: ${{ github.workspace }}/.work
+      UPSTREAM_WORKSPACE: github:ros-planning/moveit_msgs#master
+      BEFORE_SETUP_UPSTREAM_WORKSPACE: |
+        apt-get -qq update
+        apt-get -qq install -y --no-upgrade --no-install-recommends git
+        git --version
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: folder
-        uses: ipa-mdl/industrial_ci@feature/repository-filter
-        env:
-          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,franka_description
-
-      - name: -folder1,folder2
-        uses: ipa-mdl/industrial_ci@feature/repository-filter
-        env:
-          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,-franka_description,franka_msgs
-
-      - name: -folder1,-folder2
-        uses: ipa-mdl/industrial_ci@feature/repository-filter
-        env:
-          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,-franka_description,-franka_msgs
-
-      - name: folder1,folder2
-        uses: ipa-mdl/industrial_ci@feature/repository-filter
-        env:
-          TARGET_WORKSPACE: github:frankaemika/franka_ros#develop,franka_description,franka_msgs
+      - name: industrial_ci
+        uses: 'ros-industrial/industrial_ci@master'
+        env: ${{ matrix.env }}
