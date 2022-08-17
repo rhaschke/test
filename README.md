@@ -1,1 +1,1 @@
-This repo is use for testing only.
+This repo is used for testing only.
