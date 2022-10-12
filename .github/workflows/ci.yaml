@@ -6,25 +6,13 @@ on:
 
 jobs:
   default:
-    strategy:
-      fail-fast: false
-      matrix:
-        env:
-          - IMAGE: melodic
-          - IMAGE: noetic
-
     runs-on: ubuntu-latest
-    name: ${{ matrix.env.IMAGE }}
-    env:
-      DOCKER_IMAGE: ros:${{ matrix.env.IMAGE }}-ros-core
-      UPSTREAM_WORKSPACE: github:ros-planning/moveit_msgs#master
-      BEFORE_SETUP_UPSTREAM_WORKSPACE: |
-        apt-get -qq update
-        apt-get -qq install -y --no-upgrade --no-install-recommends git
-        git --version
-
+    name: output test
     steps:
-      - uses: actions/checkout@v2
-      - name: industrial_ci
-        uses: 'ros-industrial/industrial_ci@master'
-        env: ${{ matrix.env }}
+      - name: Set color
+        id: random-color-generator
+        run: |
+          echo "SELECTED_COLOR=green" >> $GITHUB_OUTPUT
+          echo $GITHUB_OUTPUT
+      - name: Get color
+        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
