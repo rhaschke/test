@@ -9,10 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     name: output test
     steps:
-      - name: Set color
-        id: random-color-generator
+      - name: Cache
+        id: cache
+        uses: rhaschke/cache@main
+        with:
+          path: data
+          key: ${{ runner.os }}-primes-${{ github.run_id }}
+          restore-keys: ${{ runner.os }}-primes-
+        env:
+          GHA_CACHE_SAVE: 'always'
+
+      - name: Generate Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: echo "generate data $(date)" > data
+
+      - name: Show Data
         run: |
-          echo "SELECTED_COLOR=green" >> $GITHUB_OUTPUT
-          echo $GITHUB_OUTPUT
-      - name: Get color
-        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
+          cat data
+          false
