@@ -16,8 +16,6 @@ jobs:
           path: data
           key: ${{ runner.os }}-primes-${{ github.run_id }}
           restore-keys: ${{ runner.os }}-primes-
-        env:
-          GHA_CACHE_SAVE: 'never'
 
       - name: Generate Data
         if: steps.cache.outputs.cache-hit != 'true'
