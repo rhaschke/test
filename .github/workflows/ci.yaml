@@ -9,19 +9,26 @@ jobs:
     runs-on: ubuntu-latest
     name: output test
     steps:
-      - name: Cache
-        id: cache
+      - name: Cache1
         uses: rhaschke/cache@main
         with:
-          path: data
-          key: ${{ runner.os }}-primes-${{ github.run_id }}
-          restore-keys: ${{ runner.os }}-primes-
+          path: data1
+          key: ${{ runner.os }}-data1-${{ github.run_id }}
+          restore-keys: ${{ runner.os }}-data1-
+
+      - name: Cache2
+        uses: rhaschke/cache@main
+        with:
+          path: data2
+          key: ${{ runner.os }}-data2-${{ github.run_id }}
+          restore-keys: ${{ runner.os }}-data2-
         env:
           GHA_CACHE_SAVE: 'always'
 
       - name: Generate Data
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: echo "generate data $(date)" > data
+        run: |
+          echo "generate data $(date)" > data1
+          echo "generate data $(date)" > data2
 
       - name: Show Data
         run: |
