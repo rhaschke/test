@@ -24,4 +24,4 @@ jobs:
       - name: Show Data
         run: |
           cat data
-          true
+          false
