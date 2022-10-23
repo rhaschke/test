@@ -25,12 +25,22 @@ jobs:
         env:
           GHA_CACHE_SAVE: 'always'
 
+      - name: Cache3
+        uses: rhaschke/cache@main
+        with:
+          path: data3
+          key: ${{ runner.os }}-data3-${{ github.run_id }}
+          restore-keys: ${{ runner.os }}-data3-
+        env:
+          GHA_CACHE_SAVE: 'never'
+
       - name: Generate Data
         run: |
           echo "generate data $(date)" > data1
           echo "generate data $(date)" > data2
+          echo "generate data $(date)" > data2
 
       - name: Show Data
         run: |
-          cat data
+          cat data*
           false
