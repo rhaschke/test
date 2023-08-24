@@ -24,14 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Cache ccache
-        uses: rhaschke/cache@main
-        with:
-          path: ${{ env.CCACHE_DIR }}
-          key: ccache-${{ env.CACHE_PREFIX }}-${{ github.sha }}-${{ github.run_id }}
-          restore-keys: |
-            ccache-${{ env.CACHE_PREFIX }}-${{ github.sha }}
-            ccache-${{ env.CACHE_PREFIX }}
-
-      - name: industrial_ci
-        uses: rhaschke/industrial_ci@debug-ccache
+      - name: Test multi-line output
+        run: |
+          echo "::warning::multi%0D%0Aline"
