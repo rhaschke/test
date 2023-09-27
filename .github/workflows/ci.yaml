@@ -6,18 +6,6 @@ on:
 
 jobs:
   default:
-    strategy:
-      fail-fast: false
-      matrix:
-        distro: [noetic]
-
-    env:
-      ROS_DISTRO: ${{ matrix.distro }}
-      PRERELEASE: true
-      BASEDIR: ${{ github.workspace }}/.work
-      CCACHE_DIR: ${{ github.workspace }}/.ccache
-      CACHE_PREFIX: ${{ matrix.distro }}
-      GHA_CACHE_SAVE: always
 
     name: "${{ matrix.distro }}"
     runs-on: ubuntu-latest
@@ -27,3 +15,33 @@ jobs:
       - name: Test multi-line output
         run: |
           echo "::warning::multi%0D%0Aline"
+
+      - run: |
+          echo "GITHUB_ENV=$GITHUB_ENV"
+          echo "GITHUB_OUTPUT=$GITHUB_OUTPUT"
+          echo "GITHUB_PATH=$GITHUB_PATH"
+          echo "GITHUB_STATE=$GITHUB_STATE"
+          echo "GITHUB_STEP_SUMMARY=$GITHUB_STEP_SUMMARY"
+
+      - run: ls -R $HOME/work/_temp
+
+      - uses: addnab/docker-run-action@v3
+        name: env
+        with:
+          image: ubuntu
+          run: env
+
+      - uses: addnab/docker-run-action@v3
+        name: Generate GITHUB_OUTPUT
+        with:
+          image: ubuntu
+          run: |
+            echo "GITHUB_OUTPUT=$GITHUB_OUTPUT"
+            echo "output=foobar" >> "$GITHUB_OUTPUT"
+            cat "$GITHUB_OUTPUT"
+
+      - run: cat "$GITHUB_ENV"
+      - run: cat "$GITHUB_OUTPUT"
+      - run: cat "$GITHUB_PATH"
+      - run: cat "$GITHUB_STATE"
+      - run: cat "$GITHUB_STEP_SUMMARY"
