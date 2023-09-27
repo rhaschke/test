@@ -25,13 +25,13 @@ jobs:
 
       - run: ls -R $HOME/work/_temp
 
-      - uses: addnab/docker-run-action@v3
+      - uses: rhaschke/docker-run-action@v4
         name: env
         with:
           image: ubuntu
           run: env
 
-      - uses: addnab/docker-run-action@v3
+      - uses: rhaschke/docker-run-action@v4
         name: Generate GITHUB_OUTPUT
         with:
           image: ubuntu
