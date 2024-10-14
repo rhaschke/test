@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>test</name>
+  <version>0.3.1</version>
+  <description>test package</description>
+
+  <maintainer email="rhaschke@techfak.uni-bielefeld.de">Robert Haschke</maintainer>
+  <author email="rhaschke@techfak.uni-bielefeld.de">Robert Haschke</author>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>message_generation</depend>
+  <depend>roscpp</depend>
+  <exec_depend>message_runtime</exec_depend>
+</package>
