@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<?xml-model
+  href="http://download.ros.org/schema/package_format3.xsd"
+  schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>testpkg</name>
+  <version>1.2.3</version>
+  <description>Test package.</description>
+  <maintainer email="logans@cottsay.net">Scott K Logan</maintainer>
+  <license>Apache License 2.0</license> <!-- The contents of this vendor package are Apache 2.0 -->
+  <buildtool_depend>ament_cmake_core</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
