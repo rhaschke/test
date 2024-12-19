@@ -5,48 +5,21 @@ on:
   push:
 
 jobs:
-  default:
-    strategy:
-      fail-fast: false
-      matrix:
-        distro: [one]
-
-    name: "${{ matrix.distro }}"
+  step1:
     runs-on: ubuntu-24.04
-    continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - run: echo "Step 1"; exit 1
 
-      - name: Run industrial_ci
-        uses: rhaschke/industrial_ci@master
-        env:
-          ROS_DISTRO: ${{ matrix.distro }}
-          TARGET_CMAKE_ARGS: >
-            -DCMAKE_BUILD_TYPE=Debug
-            -DCMAKE_CXX_FLAGS="-Werror --coverage -O2 -fno-omit-frame-pointer"
-
-      - name: Generate codecov report
-        uses: rhaschke/lcov-action@main
-        with:
-          lcov_capture_args: --ignore-errors=gcov,mismatch
-          ignore: '"*/target_ws/build/*" "*/target_ws/install/*" "*/test/*"'
+  step2:
+    needs: step1
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "Step 2"
 
   deploy:
-    if: always()
-    needs: default
+    if: success() && true
+    needs: [step1, step2]
     runs-on: ubuntu-24.04
     steps:
       - run: echo "Deploying..."
-
-  result:
-    if: always()
-    needs: [default, deploy]
-    runs-on: ubuntu-24.04
-    steps:
-      - run: |
-          for s in ${{ join(needs.*.result, ' ') }}; do
-            echo "$s"
-            if [ "$s" != "success" ] ; then
-              exit 1
-            fi
-          done
