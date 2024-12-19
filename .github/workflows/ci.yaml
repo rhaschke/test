@@ -36,3 +36,16 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - run: echo "Deploying..."
+
+  result:
+    if: always()
+    needs: [default, deploy]
+    runs-on: ubuntu-24.04
+    steps:
+      - run: |
+          for s in ${{ join(needs.*.result, ' ') }}; do
+            echo "$s"
+            if [ "$s" != "success" ] ; then
+              exit 1
+            fi
+          done
