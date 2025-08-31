@@ -8,7 +8,9 @@ jobs:
   step1:
     runs-on: ubuntu-24.04
     steps:
-      - run: echo "Step 1"; exit 1
+      - run: echo "Step 1 ${MY_ENV_VAR// /-}"; exit 1
+        env:
+          MY_ENV_VAR: "foo bar broken"
 
   step2:
     needs: step1
