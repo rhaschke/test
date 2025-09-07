@@ -2,26 +2,30 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      STRING:
+        type: string
+        description: a string
+        required: false
+      DEPLOY:
+        type: boolean
+        description: a boolean
+        required: true
+        default: true
   push:
 
 jobs:
-  step1:
+  step:
     runs-on: ubuntu-24.04
     steps:
-      - run: echo "Step 1 ${MY_ENV_VAR// /-}"; exit 1
-        env:
-          MY_ENV_VAR: "foo bar broken"
-
-  step2:
-    needs: step1
-    if: always()
-    runs-on: ubuntu-24.04
-    steps:
-      - run: echo "Step 2"
+      - run: echo "${{ inputs.STRING || 'default' }} ${{ inputs.DEPLOY == '' && true || inputs.DEPLOY }}"
+      - run: echo "${{ github.ref }}"
 
   deploy:
-    if: success() && true
-    needs: [step1, step2]
+    if: github.run_attempt > 1 ||
+        (!cancelled() &&
+          (inputs.DEPLOY || github.ref == 'refs/heads/master'))
+    needs: step
     runs-on: ubuntu-24.04
     steps:
       - run: echo "Deploying..."
