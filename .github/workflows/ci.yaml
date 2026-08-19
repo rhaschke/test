@@ -1,31 +1,14 @@
 name: CI
 
 on:
-  workflow_dispatch:
-    inputs:
-      STRING:
-        type: string
-        description: a string
-        required: false
-      DEPLOY:
-        type: boolean
-        description: a boolean
-        required: true
-        default: true
   push:
 
 jobs:
   step:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ inputs.STRING || 'default' }} ${{ inputs.DEPLOY == '' && true || inputs.DEPLOY }}"
-      - run: echo "${{ github.ref }}"
-
-  deploy:
-    if: github.run_attempt > 1 ||
-        (!cancelled() &&
-          (inputs.DEPLOY || github.ref == 'refs/heads/master'))
-    needs: step
-    runs-on: ubuntu-24.04
-    steps:
-      - run: echo "Deploying..."
+      - uses: jspricke/ros-deb-builder-action@main
+        with:
+          ROS_DISTRO: rolling
+          DEB_DISTRO: resolute
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
