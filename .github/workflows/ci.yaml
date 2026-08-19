@@ -17,3 +17,14 @@ jobs:
             ls -al /root/target_ws/src/*
             ls -al /home/runner/work/test/test/*
           AFTER_INSTALL_TARGET_DEPENDENCIES: apt policy ros-lyrical-ament-index-cpp
+
+  underlay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ros-industrial/industrial_ci@master
+        env:
+          DOCKER_IMAGE: moveit/moveit2:rolling-source
+          UPSTREAM_WORKSPACE: https://raw.githubusercontent.com/moveit/moveit2_tutorials/refs/heads/main/.github/upstream.repos
+          TARGET_WORKSPACE: github:moveit/moveit2_tutorials#main
+          TARGET_CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release
+          UNDERLAY: /root/ws_moveit/install
