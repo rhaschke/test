@@ -4,11 +4,13 @@ on:
   push:
 
 jobs:
-  step:
+  minimal:
     runs-on: ubuntu-latest
     steps:
-      - uses: jspricke/ros-deb-builder-action@main
-        with:
-          ROS_DISTRO: rolling
-          DEB_DISTRO: resolute
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v6
+      - uses: ros-industrial/industrial_ci@master
+        env:
+          ROS_DISTRO: lyrical
+          UPSTREAM_WORKSPACE: github:ament/ament_index#rolling
+          BEFORE_INSTALL_TARGET_DEPENDENCIES: apt policy ros-lyrical-ament-index-cpp
+          AFTER_INSTALL_TARGET_DEPENDENCIES: apt policy ros-lyrical-ament-index-cpp
