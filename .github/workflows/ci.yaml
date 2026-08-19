@@ -12,5 +12,8 @@ jobs:
         env:
           ROS_DISTRO: lyrical
           UPSTREAM_WORKSPACE: github:ament/ament_index#rolling
-          BEFORE_INSTALL_TARGET_DEPENDENCIES: apt policy ros-lyrical-ament-index-cpp
+          BEFORE_INSTALL_TARGET_DEPENDENCIES: |
+            apt policy ros-lyrical-ament-index-cpp
+            ls -al /root/target_ws/src/*
+            ls -al /home/runner/work/test/test/*
           AFTER_INSTALL_TARGET_DEPENDENCIES: apt policy ros-lyrical-ament-index-cpp
