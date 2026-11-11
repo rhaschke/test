@@ -4,27 +4,14 @@ on:
   push:
 
 jobs:
-  minimal:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: ros-industrial/industrial_ci@master
-        env:
-          ROS_DISTRO: lyrical
-          UPSTREAM_WORKSPACE: github:ament/ament_index#rolling
-          BEFORE_INSTALL_TARGET_DEPENDENCIES: |
-            apt policy ros-lyrical-ament-index-cpp
-            ls -al /root/target_ws/src/*
-            ls -al /home/runner/work/test/test/*
-          AFTER_INSTALL_TARGET_DEPENDENCIES: apt policy ros-lyrical-ament-index-cpp
-
-  underlay:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ros-industrial/industrial_ci@master
-        env:
-          DOCKER_IMAGE: moveit/moveit2:rolling-source
-          UPSTREAM_WORKSPACE: https://raw.githubusercontent.com/moveit/moveit2_tutorials/refs/heads/main/.github/upstream.repos
-          TARGET_WORKSPACE: github:moveit/moveit2_tutorials#main
-          TARGET_CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release
-          UNDERLAY: /root/ws_moveit/install
+      - run: |
+          sudo apt update
+          sudo apt install -y curl gnupg dirmngr
+          sudo mkdir -p /root/.gnupg
+          sudo chmod 700 /root/.gnupg
+          sudo curl -sSL https://ros.packages.techfak.net/gpg.key -o /etc/apt/keyrings/ros-one-keyring.gpg
+          sudo gpg --no-default-keyring --keyring /etc/apt/trusted.gpg.d/custom.gpg --keyserver keyserver.ubuntu.com --recv-keys D8A3751519274DEF;
+          echo "Done"
